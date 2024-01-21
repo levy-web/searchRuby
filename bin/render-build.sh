@@ -6,3 +6,4 @@ bundle install
 rails db:create
 bundle exec rails db:migrate
 rails db:seed
+rails assets:precompile
