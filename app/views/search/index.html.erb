@@ -1,0 +1,38 @@
+<h1>Search Analytics</h1>
+
+<form action="/searches" method="post">
+  <label for="query">Search:</label>
+  <input type="text" id="query" name="query" />
+  <button type="submit">Submit</button>
+</form>
+
+<ul id="search-list">
+  <% @searches.each do |search| %>
+    <li><%= search.query %></li>
+  <% end %>
+</ul>
+
+<script>
+  function submitSearch() {
+    const queryInput = document.getElementById("query");
+    const query = queryInput.value.trim();
+
+    if (query !== "") {
+        console.log("QUERY IS NOT EMPTY", query)
+      // Call your backend to handle the search
+      fetch('/searches', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ query })
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+
+      queryInput.value = ""; // Clear the input after submitting
+    }
+  }
+</script>
